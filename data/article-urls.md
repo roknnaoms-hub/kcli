@@ -13,6 +13,8 @@ https://v.daum.net/v/20260521162939853
 https://v.daum.net/v/20260521222202431?shem=rimspwouoe
 https://www.mk.co.kr/news/business/12057015
 https://n.news.naver.com/article/092/0002424217?sid=105
+https://www.nrc.re.kr/board.es?mid=a12201000000&bid=0008&list_no=179783&otp_id=&act=view
+
 
 
 
