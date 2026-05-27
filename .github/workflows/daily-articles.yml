@@ -1,0 +1,55 @@
+name: Daily major articles
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "data/article-urls.md"
+      - "data/article-urls.txt"
+      - "scripts/update-daily-articles.mjs"
+      - ".github/workflows/daily-articles.yml"
+  schedule:
+    # 07:00 Asia/Seoul is 22:00 UTC on the previous day.
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-major-articles
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Seoul
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5.5-pro' }}
+      ARTICLE_LIMIT: ${{ vars.ARTICLE_LIMIT || '12' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Update daily major articles
+        run: node scripts/update-daily-articles.mjs
+
+      - name: Commit article update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- index.html data/daily-articles.json; then
+            echo "No article changes to commit."
+            exit 0
+          fi
+          git add index.html data/daily-articles.json
+          git commit -m "Update articles from URL list"
+          git push
