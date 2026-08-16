@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 등록</title>
+    <style>
+        form { display: flex; flex-direction: column; width: 300px; margin-top: 20px; }
+        label { margin-bottom: 10px; }
+        input { padding: 5px; margin-top: 2px; }
+        button { width: 100px; padding: 5px; margin-top: 10px; }
+        a { display: inline-block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>회원 등록</h1>
+
+    <form th:action="@{/members}" th:object="${member}" method="post">
+        <label>
+            이름:
+            <input type="text" th:field="*{name}" placeholder="이름 입력"/>
+        </label>
+        <label>
+            Email:
+            <input type="email" th:field="*{email}" placeholder="Email 입력"/>
+        </label>
+        <button type="submit">등록</button>
+    </form>
+
+    <a href="/members">목록으로</a>
+</body>
+</html>
